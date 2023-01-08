@@ -32,6 +32,10 @@ impl GildedRose {
 
     pub fn update_quality(&mut self) {
         for item in &mut self.items {
+            if item.name == "Sulfuras, Hand of Ragnaros" {
+                item.quality = 80;
+                continue;
+            }
             if item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert"
             {
                 if item.quality > 0 {
@@ -89,11 +93,83 @@ mod tests {
     use super::{GildedRose, Item};
 
     #[test]
-    pub fn foo() {
-        let items = vec![Item::new("foo", 0, 0)];
+    pub fn backstage_passes_gain_then_drop_to_zero_after_concert() {
+        let items = vec![Item::new("Backstage passes to a TAFKAL80ETC concert", 15, 0)];
         let mut rose = GildedRose::new(items);
-        rose.update_quality();
 
-        assert_eq!("fixme", rose.items[0].name);
+        rose.update_quality();
+        rose.update_quality();
+        rose.update_quality();
+        rose.update_quality();
+        rose.update_quality();
+        assert_eq!(5, rose.items[0].quality);
+        rose.update_quality();
+        rose.update_quality();
+        rose.update_quality();
+        rose.update_quality();
+        rose.update_quality();
+        assert_eq!(15, rose.items[0].quality);
+        rose.update_quality();
+        rose.update_quality();
+        rose.update_quality();
+        rose.update_quality();
+        rose.update_quality();
+        assert_eq!(30, rose.items[0].quality);
+        rose.update_quality();
+        assert_eq!(0, rose.items[0].quality);
+    }
+
+    #[test]
+    pub fn normal_item_loses_quality_slowly_then_quickly_then_stops() {
+        let items = vec![Item::new("+5 Dexterity Vest", 2, 6)];
+        let mut rose = GildedRose::new(items);
+
+        rose.update_quality();
+        assert_eq!(5, rose.items[0].quality);
+        rose.update_quality();
+        assert_eq!(4, rose.items[0].quality);
+        // after 2 days, double decay
+        rose.update_quality();
+        assert_eq!(2, rose.items[0].quality);
+        rose.update_quality();
+        assert_eq!(0, rose.items[0].quality);
+        // no qualty left to lose
+        rose.update_quality();
+        assert_eq!(0, rose.items[0].quality);
+    }
+
+    #[test]
+    pub fn aged_brie_gains_quality_and_eventually_maxes() {
+        let items = vec![Item::new("Aged Brie", 2, 0)];
+        let mut rose = GildedRose::new(items);
+
+        rose.update_quality();
+        assert_eq!(1, rose.items[0].quality);
+        rose.update_quality();
+        assert_eq!(2, rose.items[0].quality);
+        // after 2 days, double gain
+        rose.update_quality();
+        assert_eq!(4, rose.items[0].quality);
+        rose.update_quality();
+        assert_eq!(6, rose.items[0].quality);
+        
+        while rose.items[0].quality < 50 {
+            rose.update_quality();
+        }
+        // after many days, max at 50
+        rose.update_quality();
+        rose.update_quality();
+        assert_eq!(50, rose.items[0].quality);
+    }
+
+    #[test]
+    pub fn legendary_sulfuras_has_unwavering_quality() {
+        let items = vec![Item::new("Sulfuras, Hand of Ragnaros", 0, 0)];
+        let mut rose = GildedRose::new(items);
+
+        rose.update_quality();
+        assert_eq!(80, rose.items[0].quality);
+        rose.update_quality();
+        assert_eq!(80, rose.items[0].quality);
     }
 }

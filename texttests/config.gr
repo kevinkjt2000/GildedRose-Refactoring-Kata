@@ -11,6 +11,8 @@ diff_program:meld
 # Settings for the cpp version
 #executable:${TEXTTEST_HOME}/cpp/cmake-build-debug/test/cpp_texttest/GildedRoseTextTests
 
+executable:${TEXTTEST_HOME}/rust/target/debug/rust
+
 # Settings for the Java version
 #executable:com.gildedrose.TexttestFixture
 #interpreter:java
