@@ -5,13 +5,14 @@ view_program:subl
 diff_program:meld
 
 # Settings for the Python version
-#executable:${TEXTTEST_HOME}/python/texttest_fixture.py
-#interpreter:python
+executable:${TEXTTEST_HOME}/python/texttest_fixture.py
+interpreter:python
 
 # Settings for the cpp version
 #executable:${TEXTTEST_HOME}/cpp/cmake-build-debug/test/cpp_texttest/GildedRoseTextTests
 
-executable:${TEXTTEST_HOME}/rust/target/debug/rust
+# Settings for the rust version (this ran but didn't catch failures for me)
+#executable:${TEXTTEST_HOME}/rust/target/debug/rust
 
 # Settings for the Java version
 #executable:com.gildedrose.TexttestFixture
