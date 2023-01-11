@@ -28,6 +28,8 @@ class GildedRose(object):
                 change_in_quality = backstage_passes(item)
             elif "Aged Brie" == item.name:
                 change_in_quality = 1 if item.sell_in > 0 else 2
+            elif "Conjured" in item.name:
+                change_in_quality = -2 if item.sell_in > 0 else -4
             else:
                 change_in_quality = -1 if item.sell_in > 0 else -2
 

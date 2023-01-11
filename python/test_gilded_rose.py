@@ -10,6 +10,14 @@ class GildedRoseTest(unittest.TestCase):
         self.assertEqual(0, clamp(-1, 0, 2))
         self.assertEqual(2, clamp(5, 0, 2))
 
+    def test_conjured_items_degrade_in_quality_twice_as_fast_as_normal(self):
+        items = [Item("Conjured Mana Cake", 3, 16)]
+        gilded_rose = GildedRose(items)
+
+        for expected in [14, 12, 10, 6, 2, 0]:
+            gilded_rose.update_quality()
+            self.assertEqual(expected, items[0].quality)
+
     def test_backstage_passes_gain_then_drop_to_zero_after_concert(self):
         items = [Item("Backstage passes to a TAFKAL80ETC concert", 15, 0)]
         gilded_rose = GildedRose(items)
